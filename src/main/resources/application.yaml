@@ -1,0 +1,16 @@
+server:
+  port: 8084
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mysql://dev.fastme.net:3306/springboot
+    username: "nimer"
+    password: "Nimer@20210810"
+
+auth:
+  expiration: 15
+  secret: lkfhgvjbn;oiouigyjvhmbnjiouigjhbkhkb
+  header: Authorization
