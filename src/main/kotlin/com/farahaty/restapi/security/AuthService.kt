@@ -1,6 +1,7 @@
 package com.farahaty.restapi.security
 
-import org.springframework.context.ApplicationContext
+import com.farahaty.restapi.user.User
+import com.farahaty.restapi.user.UserRepository
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -10,13 +11,14 @@ import org.springframework.stereotype.Service
 @Service
 class AuthService(
     val userRepository: UserRepository,
-    val applicationContext: ApplicationContext
+    val passwordEncoder: PasswordEncoder,
+    val securityProperties: SecurityProperties
 ) : UserDetailsService {
 
 
     /*
-     * be used by spring security to find the user by email
-     */
+    * be used by spring security to find the user by email
+    */
     override fun loadUserByUsername(email: String): UserDetails {
         val user =
             userRepository.findOneByEmail(email) ?: throw NoSuchElementException("user with email $email not found");
@@ -24,17 +26,14 @@ class AuthService(
     }
 
 
-    fun getAllUsers(): List<User> {
-        return userRepository.findAll()
-    }
-
-
-    fun register(registerRequest: RegisterRequest): User {
-        val passwordEncoder: PasswordEncoder = applicationContext.getBean(PasswordEncoder::class.java)
+    fun register(registerRequest: RegisterRequest): RegisterResponse {
         val password = passwordEncoder.encode(registerRequest.password)
-        val user = User(email = registerRequest.email, password = password)
+        val user = userRepository.save(User(email = registerRequest.email, password = password))
+        val userAccount = UserAccount(user)
+        val token = JWTUtil(securityProperties).generateToken(userAccount)
 
-        return userRepository.save(user)
+        return RegisterResponse(user, token )
+
     }
 
 

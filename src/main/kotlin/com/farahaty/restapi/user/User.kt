@@ -1,5 +1,6 @@
-package com.farahaty.restapi.security
+package com.farahaty.restapi.user
 
+import com.farahaty.restapi.role.Role
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.*
 import javax.persistence.*

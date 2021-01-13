@@ -1,4 +1,4 @@
-package com.farahaty.restapi.security
+package com.farahaty.restapi.role
 
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue

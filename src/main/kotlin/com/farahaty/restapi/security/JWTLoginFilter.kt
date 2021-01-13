@@ -56,9 +56,9 @@ class JWTLoginFilter (
             throw AuthenticationServiceException("User Details is not correct")
         }
 
-        val token = JWTUtil(securityProperties).generateToken(userDetails.user)
+        val token = JWTUtil(securityProperties).generateToken(userDetails)
 
-        response?.setHeader(securityProperties.header, securityProperties.tokenPrefix +  token )
+        response?.setHeader(securityProperties.header, securityProperties.tokenPrefix + " " +   token )
         val body = LoginResponse(userDetails.user, token).toJSON()
 
         response?.setHeader("content-type", "application/json")

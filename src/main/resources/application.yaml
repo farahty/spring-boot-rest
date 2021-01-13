@@ -11,6 +11,7 @@ spring:
     password: "Nimer@20210810"
 
 auth:
-  expiration: 15
+  expiration: 2000
   secret: lkfhgvjbn;oiouigyjvhmbnjiouigjhbkhkb
   header: Authorization
+  tokenPrefix: Bearer

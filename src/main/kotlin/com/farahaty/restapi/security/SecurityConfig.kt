@@ -18,18 +18,22 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity?) {
 
         http
+            // disable cors and csrf
             ?.cors()
             ?.and()
             ?.csrf()
             ?.disable()
 
-
+            // set the session policy
             ?.sessionManagement()
             ?.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
+            // configure authentication filters
             ?.and()
             ?.addFilter(JWTLoginFilter(authenticationManager(), securityProperties()))
-            ?.addFilter(JWTAuthFilter(authenticationManager()))
+            ?.addFilter(JWTAuthFilter(authenticationManager(), securityProperties()))
+
+            // configure the routes permission
             ?.authorizeRequests()
             ?.antMatchers(*PUBLIC_ENPOINTS)
             ?.permitAll()
@@ -38,27 +42,17 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
 
     }
 
-
-
     @Bean
     fun passwordEncoderAndMatcher(): PasswordEncoder {
         return object : PasswordEncoder {
-            override fun encode(rawPassword: CharSequence?): String {
-                return BCryptPasswordEncoder().encode(rawPassword)
-            }
-            override fun matches(rawPassword: CharSequence?, encodedPassword: String?): Boolean {
-                return BCryptPasswordEncoder().matches(rawPassword, encodedPassword)
-            }
+            override fun encode(rawPassword: CharSequence?): String = BCryptPasswordEncoder().encode(rawPassword)
+            override fun matches(rawPassword: CharSequence?, encodedPassword: String?): Boolean = BCryptPasswordEncoder().matches(rawPassword, encodedPassword)
         }
     }
 
     @Bean
-    override fun authenticationManager(): AuthenticationManager {
-        return super.authenticationManager()
-    }
+    override fun authenticationManager(): AuthenticationManager = super.authenticationManager()
 
     @Bean
-    fun securityProperties () : SecurityProperties {
-        return SecurityProperties()
-    }
+    fun securityProperties () : SecurityProperties = SecurityProperties()
 }

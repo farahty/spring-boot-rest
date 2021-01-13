@@ -1,4 +1,4 @@
-package com.farahaty.restapi.security
+package com.farahaty.restapi.user
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -8,17 +8,12 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/users")
 class UserController(
-    val authService: AuthService
+    val userService: UserService
 ) {
-
-
 
     @GetMapping
     fun getAllUser(): List<User> {
-
-        return authService.getAllUsers()
+        return  userService.findAll()
     }
-
-
 
 }

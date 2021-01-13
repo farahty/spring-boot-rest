@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 class SecurityProperties {
     var secret = ""
     var expiration: Int = 15
-    var tokenPrefix = "Bearer "
+    var tokenPrefix = "Bearer"
     var header = "Authorization"
     var strength = 10
 }

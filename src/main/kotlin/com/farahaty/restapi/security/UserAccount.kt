@@ -1,17 +1,17 @@
 package com.farahaty.restapi.security
 
+import com.farahaty.restapi.user.User
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.util.stream.Collectors
 
-data class UserAccount(var user:User): UserDetails {
+data class UserAccount(var user: User): UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return user
             .roles
             .stream()
             .map { role ->
-
                 SimpleGrantedAuthority(role.toString())
             }
             .collect(Collectors.toList())
